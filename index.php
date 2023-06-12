@@ -28,7 +28,7 @@ $customerList = [
         "profile" => "images/img5.jpg"]
 ];
 
-function searchByDate($customers, $fromDate, $toDate)
+function searchByDate($customers, $fromDate, $toDate): array
 {
     if (empty($fromDate) || empty($toDate)) {
         return $customers;
@@ -45,6 +45,11 @@ function searchByDate($customers, $fromDate, $toDate)
     return $filteredCustomers;
 }
 
+$fromDate = $_REQUEST["from"] ?? null;
+$toDate =  $_REQUEST["to"]?? null;
+
+$filteredCustomers = searchByDate($customerList, $fromDate, $toDate);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,23 +59,14 @@ function searchByDate($customers, $fromDate, $toDate)
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-<?php
-$fromDate = null;
-$toDate = null;
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $fromDate = $_REQUEST["from"];
-    $toDate = $_REQUEST["to"];
-}
-$filteredCustomers = searchByDate($customerList, $fromDate, $toDate);
-?>
 <form method="GET">
     Chọn ngày sinh từ: <input id="from" type="date" name="from" placeholder="yyyy/mm/dd"
-               value="<?php echo isset($fromDate) ? $fromDate : ''; ?>"/>
+                              value="<?php echo $fromDate ?? ''; ?>"/>
     đến: <input id="to" type="date" name="to" placeholder="yyyy/mm/dd"
-                value="<?php echo isset($toDate) ? $toDate : ''; ?>"/>
+                value="<?php echo $toDate ?? ''; ?>"/>
     <input type="submit" id="submit" value="Lọc"/>
 </form>
-<table border="0">
+<table>
     <caption><h2>Danh sách khách hàng</h2></caption>
     <tr>
         <th>STT</th>
